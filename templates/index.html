@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Disaster Tweet Classifier</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+    <main class="container">
+        <div class="icon">🌍</div>
+
+        <h1>Disaster Tweet Classifier</h1>
+
+        <p class="subtitle">
+            Enter a tweet to predict whether it describes a disaster.
+        </p>
+
+        <form method="POST">
+            <label for="tweet">Enter your tweet</label>
+
+            <textarea
+                id="tweet"
+                name="tweet"
+                rows="6"
+                maxlength="5000"
+                placeholder="Example: Heavy flooding has damaged several houses..."
+                required
+            >{{ tweet }}</textarea>
+
+            <button type="submit">Analyze Tweet</button>
+        </form>
+
+        {% if prediction %}
+            <section class="result">
+                <h2>Prediction Result</h2>
+
+                <p class="{% if prediction == 'Disaster' %}disaster{% else %}non-disaster{% endif %}">
+                    {{ prediction }}
+                </p>
+
+                {% if confidence is not none %}
+                    <p>
+                        Model confidence: {{ "%.2f"|format(confidence) }}%
+                    </p>
+                {% endif %}
+
+                <p class="note">
+                    This is a machine-learning prediction, not confirmation
+                    that a real-world disaster has occurred.
+                </p>
+            </section>
+        {% endif %}
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+    </main>
+</body>
+</html>
